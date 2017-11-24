@@ -1,3 +1,5 @@
 {
-  
+  "scripts": {
+    "build": "webpack index.js dist/bundle.js --watch"
+  }
 }
