@@ -7,16 +7,32 @@
 </head>
 <body>
 
+<div style="height: 500px;border: 2px solid red">dd</div>
+
 <div class="_templates" style="display: none;">
     <div class="grid-item">
         <span class="title"></span>
     </div>
 
     <div class="template-overlay">
-        <svg class height="100%" width="100%">
-            <path opacity="0" class="xxx" d="M0 0 0 0" fill="gray"/>
-        </svg>
     </div>
+
+    <svg class="overlay-svg" height="100%" width="100%">
+        <path opacity="0" class="xxx" d="M0 0 0 0" fill="gray"/>
+    </svg>
+
+    <div class="overlay-grid-item">
+        <div class="header-container">
+            <span class="header"></span>
+        </div>
+        <div class="content-container">
+            <div class="text"></div>
+            <div class="items"></div>
+        </div>
+
+    </div>
+
+    <button class="overlay-close">XLOSE</button>
 </div>
 
 

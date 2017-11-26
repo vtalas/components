@@ -4,8 +4,8 @@ let data = {
         text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
     },
     bbb: {
-        title: 'title bbb',
-        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
+        title: 'Aadf dkjbfkjdbk',
+        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a kjaskfjbkjas bdkjfbkjdsab kjbdsafkbsadkfbk baskdbfkbdsak jbdsakfjb kasbdfkb ksajbdkfj sadkflakdsnflkjdsaljf klkdsajf lkjdsaf',
     },
     abbxb: {
         title: 'title bbb',
@@ -35,6 +35,18 @@ let data = {
         title: 'title bbb',
         text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
     },
+    aSSS: {
+        title: 'title bbb',
+        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
+    },
+    SDSS: {
+        title: 'title bbb',
+        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
+    },
+    sdsd: {
+        title: 'title bbb',
+        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
+    },
     rrbbxssdb: {
         title: 'title bbb',
         text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
@@ -50,28 +62,56 @@ let data = {
 };
 
 import Media from './media';
-import GridItem from './grid-item';
-import {overlayProto} from './overlay';
+import {gridItemProto} from './grid-item';
+import * as over from './overlay';
 
 const TEMPLATES = {
     GRID_ITEM: document.querySelector('._templates .grid-item'),
-    OVERLAY: document.querySelector('._templates .template-overlay')
+    OVERLAY: document.querySelector('._templates .template-overlay'),
+    OVERLAY_GRID_ITEM: document.querySelector('._templates .overlay-grid-item'),
+    OVERLAY_SVG: document.querySelector('._templates .overlay-svg'),
+    OVERLAY_CLOSE: document.querySelector('._templates .overlay-close')
 };
 
 const DOM = {
     BODY: document.querySelector('body'),
+    HTML: document.querySelector('html'),
 };
-
 
 const media = Media();
 
-const Overlay = function(template) {
-    let a = Object.create(overlayProto).init(template);
-    DOM.BODY.appendChild(a.DOM.el);
+const Overlay = function() {
+    const proto = Object.assign(
+        over.proto,
+        over.svgProto,
+        over.closeProto,
+        over.overlayGridItemProto
+    );
+    let a = Object.create(proto)
+        .init(TEMPLATES.OVERLAY)
+        .initGridItem(TEMPLATES.OVERLAY_GRID_ITEM)
+        .initSvg(TEMPLATES.OVERLAY_SVG)
+        .initClose(TEMPLATES.OVERLAY_CLOSE)
+    DOM.BODY.appendChild(a.dom.el);
+
     return a;
 };
 
-const overlay = Overlay(TEMPLATES.OVERLAY);
+const GridItem = function(data) {
+    var proto = Object.assign(gridItemProto, {
+        open() {
+            this.DOM.el.style.opacity = 0;
+        },
+        close() {
+            this.DOM.el.style.opacity = 1;
+        }
+    });
+
+    let gridItem = Object.create(proto);
+    gridItem.init(data);
+    return gridItem;
+};
+
 
 const items = Object.values(data).map(function(attributes) {
     let el = TEMPLATES.GRID_ITEM.cloneNode(true);
@@ -80,43 +120,38 @@ const items = Object.values(data).map(function(attributes) {
 
     el.addEventListener('click', function() {
 
-        var rect = this.getBoundingClientRect();
+        let el = this.DOM.el;
+        let rect = el.getBoundingClientRect();
+
+        console.log(rect);
 
         const w = media.getWidth();
         const h = media.getHeight();
-        const o = 50;
-        overlay.open({ rect, w, h, o });
+        const o = 150;
+        const item = this;
 
-        this.style.opacity = 0;
+        DOM.HTML.style.overflow = 'hidden';
 
-    });
+        overlay.open({
+            rect, w, h, o,
+            close: () => {
+                this.close();
+                overlay.hideData();
+                DOM.HTML.style.overflow = 'auto';
+            },
+            done: function() {
+                overlay.showData(item, rect);
+            }
+        });
+
+        this.open();
+
+    }.bind(gridItem));
 
     return gridItem;
 });
 
-
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-
-var proto = Object.assign({
-        xxx: 'jsjsjsjsjssj',
-        b: function() {
-            console.log(this.xxx + 'bbbbbbb');
-        }
-    },
-    {
-        a: function() {
-            console.log(this.xxx + 'kjbaskjdbs');
-        }
-    });
-
-const test = Object.create(proto);
-test.a()
-test.b()
-
-
-console.log(items);
+const overlay = Overlay();
 
 
 

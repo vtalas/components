@@ -1,4 +1,4 @@
-const gridItemProto = {
+export const gridItemProto = {
     name: 'grid item',
 
     init: function(data) {
@@ -8,14 +8,8 @@ const gridItemProto = {
         this.DOM.title = data.el.querySelector('.title');
         this.DOM.title.textContent = data.attributes.title;
         this.DOM.path = data.el.querySelector('.xxx');
+
+        this.data = data.attributes;
     }
 };
 
-
-const GridItem = function(data) {
-    let gridItem = Object.create(gridItemProto);
-    gridItem.init(data);
-    return gridItem;
-};
-
-export default GridItem;
