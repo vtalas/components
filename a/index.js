@@ -63,6 +63,7 @@ let data = {
 
 import Media from './media';
 import {gridItemProto} from './grid-item';
+import {logoProto} from './logo/logo';
 import * as over from './overlay';
 
 const TEMPLATES = {
@@ -72,6 +73,9 @@ const TEMPLATES = {
     OVERLAY_SVG: document.querySelector('._templates .overlay-svg'),
     OVERLAY_CLOSE: document.querySelector('._templates .overlay-close')
 };
+const SOURCE_EL = {
+    LOGO: document.querySelector('.logo')
+}
 
 const DOM = {
     BODY: document.querySelector('body'),
@@ -112,7 +116,6 @@ const GridItem = function(data) {
     return gridItem;
 };
 
-
 const items = Object.values(data).map(function(attributes) {
     let el = TEMPLATES.GRID_ITEM.cloneNode(true);
     DOM.BODY.appendChild(el);
@@ -152,6 +155,11 @@ const items = Object.values(data).map(function(attributes) {
 });
 
 const overlay = Overlay();
+
+
+const logo = function() {
+    return Object.create(logoProto).initLogo(SOURCE_EL.LOGO);
+}();
 
 
 

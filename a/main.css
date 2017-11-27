@@ -3,6 +3,11 @@ html, body {
     padding: 0;
 }
 
+.header-container-top {
+    height: 500px;
+    padding-top: 50px;
+}
+
 .grid-item {
     background-color: gray;
     width: 300px;
