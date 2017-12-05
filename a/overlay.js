@@ -5,7 +5,7 @@ export const proto = {
         this.dom.el = template.cloneNode(true);
         return this;
     }
-}
+};
 
 export const closeProto = {
 
