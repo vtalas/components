@@ -177,12 +177,32 @@ const Overlay = function() {
 };
 
 const GridItem = function(data) {
-    var proto = Object.assign(__WEBPACK_IMPORTED_MODULE_1__grid_item__["a" /* gridItemProto */], {
-        open() {
+
+    const proto = Object.assign(__WEBPACK_IMPORTED_MODULE_1__grid_item__["a" /* gridItemProto */], {
+        onClick() {
+
+            let el = this.DOM.el;
+            let rect = el.getBoundingClientRect();
+
+            const w = media.getWidth();
+            const h = media.getHeight();
+            const o = 0;
+
+            DOM.HTML.style.overflow = 'hidden';
+
+            overlay.open({
+                rect, w, h, o,
+                done: () => {
+                    overlay.showData(this, rect);
+                },
+                close: () => {
+                    this.DOM.el.style.opacity = 1;
+                    overlay.hideData();
+                    DOM.HTML.style.overflow = 'auto';
+                }
+            });
+
             this.DOM.el.style.opacity = 0;
-        },
-        close() {
-            this.DOM.el.style.opacity = 1;
         }
     });
 
@@ -195,37 +215,7 @@ const items = Object.values(data).map(function(attributes) {
     let el = TEMPLATES.GRID_ITEM.cloneNode(true);
     DOM.BODY.appendChild(el);
     let gridItem = GridItem({ el, attributes });
-
-    el.addEventListener('click', function() {
-
-        let el = this.DOM.el;
-        let rect = el.getBoundingClientRect();
-
-        console.log(rect);
-
-        const w = media.getWidth();
-        const h = media.getHeight();
-        const o = 150;
-        const item = this;
-
-        DOM.HTML.style.overflow = 'hidden';
-
-        overlay.open({
-            rect, w, h, o,
-            close: () => {
-                this.close();
-                overlay.hideData();
-                DOM.HTML.style.overflow = 'auto';
-            },
-            done: function() {
-                overlay.showData(item, rect);
-            }
-        });
-
-        this.open();
-
-    }.bind(gridItem));
-
+    el.addEventListener('click', gridItem.onClick.bind(gridItem));
     return gridItem;
 });
 
@@ -287,9 +277,9 @@ const gridItemProto = {
 
         this.DOM = {};
         this.DOM.el = data.el;
+
         this.DOM.title = data.el.querySelector('.title');
         this.DOM.title.textContent = data.attributes.title;
-        this.DOM.path = data.el.querySelector('.largeFrame');
 
         this.data = data.attributes;
     }
@@ -476,21 +466,42 @@ const closeProto = {
         let opt = this.opt;
         let el = this.dom.el;
 
-        let rect = opt.rect;
+        let destination = opt.rect;
 
         el.classList.remove('active');
 
         anime({
             targets: this.dom.path,
             duration: 200,
+            offset: 0,
             easing: 'easeOutQuad',
             elasticity: 250,
             d: [{
                 value: [
-                    'M', rect.left, rect.top,
-                    rect.left, rect.height + rect.top,
-                    rect.left + rect.width, rect.height + rect.top,
-                    rect.left + rect.width, rect.top
+                    'M', destination.left, destination.top,
+                    destination.left, destination.height + destination.top,
+                    destination.left + destination.width, destination.height + destination.top,
+                    destination.left + destination.width, destination.top
+                ].join(' ')
+            }
+            ],
+            complete: () => {
+                el.style.opacity = 0;
+            }
+        });
+
+        anime({
+            targets: this.dom.path,
+            duration: 200,
+            offset: 0,
+            easing: 'easeOutQuad',
+            elasticity: 250,
+            d: [{
+                value: [
+                    'M', destination.left, destination.top,
+                    destination.left, destination.height + destination.top,
+                    destination.left + destination.width, destination.height + destination.top,
+                    destination.left + destination.width, destination.top
                 ].join(' ')
             }
             ],
@@ -531,40 +542,40 @@ const svgProto = {
         el.style.opacity = 1;
         el.classList.add('active');
 
-        let rect = opt.rect;
+        let sourceRect = opt.rect;
         let w = opt.w;
         let o = opt.o;
         let h = opt.h;
 
-        var d = [
-            'M', rect.left, rect.top,
-            rect.left, rect.height + rect.top,
-            rect.left + rect.width, rect.height + rect.top,
-            rect.left + rect.width, rect.top
+        const dSource = [
+            'M', sourceRect.left, sourceRect.top,
+            sourceRect.left, sourceRect.height + sourceRect.top,
+            sourceRect.left + sourceRect.width, sourceRect.height + sourceRect.top,
+            sourceRect.left + sourceRect.width, sourceRect.top
         ];
 
         this.dom.path.setAttribute('opacity', 1);
-        this.dom.path.setAttribute('d', d.join(' '));
+        this.dom.path.setAttribute('d', dSource.join(' '));
 
         var t = anime.timeline()
         t.add({
             targets: this.dom.path,
-            duration: 500,
+            duration: 600,
             easing: 'easeOutQuad',
             elasticity: 250,
             d: [{
                 value: [
-                    'M', rect.left, rect.top,
+                    'M', sourceRect.left, sourceRect.top,
                     0, h,
                     w, h,
-                    rect.left + rect.width, rect.top
+                    sourceRect.left + sourceRect.width, sourceRect.top
                 ].join(' ')
             }
             ],
             complete: () => this.isAnimating = false
         }).add({
             targets: this.dom.path,
-            duration: 400,
+            duration: 800,
             easing: 'easeOutQuad',
             elasticity: 250,
             offset: 100,
@@ -604,7 +615,7 @@ const overlayGridItemProto = {
         return this;
     },
 
-    showData(gridItem, rect) {
+    showData(gridItem) {
 
         let data = gridItem.data;
 
@@ -615,7 +626,7 @@ const overlayGridItemProto = {
         let itemsContent = this.dom.gridItemTemplate.querySelector('.items');
         let count = 10;
 
-        var intro = document.createElement('div');
+        const intro = document.createElement('div');
         intro.classList.add('intro')
 
         for (var i = 0, n = count; i < n; i++) {

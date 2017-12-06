@@ -23,21 +23,42 @@ export const closeProto = {
         let opt = this.opt;
         let el = this.dom.el;
 
-        let rect = opt.rect;
+        let destination = opt.rect;
 
         el.classList.remove('active');
 
         anime({
             targets: this.dom.path,
             duration: 200,
+            offset: 0,
             easing: 'easeOutQuad',
             elasticity: 250,
             d: [{
                 value: [
-                    'M', rect.left, rect.top,
-                    rect.left, rect.height + rect.top,
-                    rect.left + rect.width, rect.height + rect.top,
-                    rect.left + rect.width, rect.top
+                    'M', destination.left, destination.top,
+                    destination.left, destination.height + destination.top,
+                    destination.left + destination.width, destination.height + destination.top,
+                    destination.left + destination.width, destination.top
+                ].join(' ')
+            }
+            ],
+            complete: () => {
+                el.style.opacity = 0;
+            }
+        });
+
+        anime({
+            targets: this.dom.path,
+            duration: 200,
+            offset: 0,
+            easing: 'easeOutQuad',
+            elasticity: 250,
+            d: [{
+                value: [
+                    'M', destination.left, destination.top,
+                    destination.left, destination.height + destination.top,
+                    destination.left + destination.width, destination.height + destination.top,
+                    destination.left + destination.width, destination.top
                 ].join(' ')
             }
             ],
@@ -76,40 +97,40 @@ export const svgProto = {
         el.style.opacity = 1;
         el.classList.add('active');
 
-        let rect = opt.rect;
+        let sourceRect = opt.rect;
         let w = opt.w;
         let o = opt.o;
         let h = opt.h;
 
-        var d = [
-            'M', rect.left, rect.top,
-            rect.left, rect.height + rect.top,
-            rect.left + rect.width, rect.height + rect.top,
-            rect.left + rect.width, rect.top
+        const dSource = [
+            'M', sourceRect.left, sourceRect.top,
+            sourceRect.left, sourceRect.height + sourceRect.top,
+            sourceRect.left + sourceRect.width, sourceRect.height + sourceRect.top,
+            sourceRect.left + sourceRect.width, sourceRect.top
         ];
 
         this.dom.path.setAttribute('opacity', 1);
-        this.dom.path.setAttribute('d', d.join(' '));
+        this.dom.path.setAttribute('d', dSource.join(' '));
 
         var t = anime.timeline()
         t.add({
             targets: this.dom.path,
-            duration: 500,
+            duration: 600,
             easing: 'easeOutQuad',
             elasticity: 250,
             d: [{
                 value: [
-                    'M', rect.left, rect.top,
+                    'M', sourceRect.left, sourceRect.top,
                     0, h,
                     w, h,
-                    rect.left + rect.width, rect.top
+                    sourceRect.left + sourceRect.width, sourceRect.top
                 ].join(' ')
             }
             ],
             complete: () => this.isAnimating = false
         }).add({
             targets: this.dom.path,
-            duration: 400,
+            duration: 800,
             easing: 'easeOutQuad',
             elasticity: 250,
             offset: 100,
@@ -147,7 +168,7 @@ export const overlayGridItemProto = {
         return this;
     },
 
-    showData(gridItem, rect) {
+    showData(gridItem) {
 
         let data = gridItem.data;
 
@@ -158,7 +179,7 @@ export const overlayGridItemProto = {
         let itemsContent = this.dom.gridItemTemplate.querySelector('.items');
         let count = 10;
 
-        var intro = document.createElement('div');
+        const intro = document.createElement('div');
         intro.classList.add('intro')
 
         for (var i = 0, n = count; i < n; i++) {

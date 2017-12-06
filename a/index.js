@@ -102,12 +102,32 @@ const Overlay = function() {
 };
 
 const GridItem = function(data) {
-    var proto = Object.assign(gridItemProto, {
-        open() {
+
+    const proto = Object.assign(gridItemProto, {
+        onClick() {
+
+            let el = this.DOM.el;
+            let rect = el.getBoundingClientRect();
+
+            const w = media.getWidth();
+            const h = media.getHeight();
+            const o = 0;
+
+            DOM.HTML.style.overflow = 'hidden';
+
+            overlay.open({
+                rect, w, h, o,
+                done: () => {
+                    overlay.showData(this, rect);
+                },
+                close: () => {
+                    this.DOM.el.style.opacity = 1;
+                    overlay.hideData();
+                    DOM.HTML.style.overflow = 'auto';
+                }
+            });
+
             this.DOM.el.style.opacity = 0;
-        },
-        close() {
-            this.DOM.el.style.opacity = 1;
         }
     });
 
@@ -120,37 +140,7 @@ const items = Object.values(data).map(function(attributes) {
     let el = TEMPLATES.GRID_ITEM.cloneNode(true);
     DOM.BODY.appendChild(el);
     let gridItem = GridItem({ el, attributes });
-
-    el.addEventListener('click', function() {
-
-        let el = this.DOM.el;
-        let rect = el.getBoundingClientRect();
-
-        console.log(rect);
-
-        const w = media.getWidth();
-        const h = media.getHeight();
-        const o = 150;
-        const item = this;
-
-        DOM.HTML.style.overflow = 'hidden';
-
-        overlay.open({
-            rect, w, h, o,
-            close: () => {
-                this.close();
-                overlay.hideData();
-                DOM.HTML.style.overflow = 'auto';
-            },
-            done: function() {
-                overlay.showData(item, rect);
-            }
-        });
-
-        this.open();
-
-    }.bind(gridItem));
-
+    el.addEventListener('click', gridItem.onClick.bind(gridItem));
     return gridItem;
 });
 
