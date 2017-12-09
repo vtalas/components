@@ -1,3 +1,6 @@
+import * as client from './content';
+
+/*
 let data = {
     aaa: {
         title: 'title aaa',
@@ -60,6 +63,7 @@ let data = {
         text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
     }
 };
+*/
 
 import Media from './media';
 import {gridItemProto} from './grid-item';
@@ -136,12 +140,15 @@ const GridItem = function(data) {
     return gridItem;
 };
 
-const items = Object.values(data).map(function(attributes) {
-    let el = TEMPLATES.GRID_ITEM.cloneNode(true);
-    DOM.BODY.appendChild(el);
-    let gridItem = GridItem({ el, attributes });
-    el.addEventListener('click', gridItem.onClick.bind(gridItem));
-    return gridItem;
+client.getEntries().then(function(data) {
+
+    const items = Object.values(data).map(function(attributes) {
+        let el = TEMPLATES.GRID_ITEM.cloneNode(true);
+        DOM.BODY.appendChild(el);
+        let gridItem = GridItem({ el, attributes });
+        el.addEventListener('click', gridItem.onClick.bind(gridItem));
+        return gridItem;
+    });
 });
 
 const overlay = Overlay();

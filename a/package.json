@@ -1,5 +1,13 @@
 {
   "scripts": {
     "build": "webpack index.js dist/bundle.js --watch"
+  },
+  "dependencies": {
+    "animejs": "^2.2.0",
+    "contentful": "^5.0.5",
+    "marked": "^0.3.7"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.0.3"
   }
 }

@@ -1,3 +1,6 @@
+import anime from 'animejs';
+import m from 'marked';
+
 export const proto = {
 
     init(template) {
@@ -144,7 +147,7 @@ export const svgProto = {
             }
             ],
             complete: () => {
-                opt.done()
+                opt.done();
                 this.openingAnimation = false;
             }
 
@@ -173,8 +176,8 @@ export const overlayGridItemProto = {
         let data = gridItem.data;
 
         this.dom.gridItemTemplate.style.display = 'block';
-        this.dom.text.textContent = data.text;
         this.dom.header.textContent = data.title;
+        this.dom.text.innerHTML = m(data.text);
 
         let itemsContent = this.dom.gridItemTemplate.querySelector('.items');
         let count = 10;

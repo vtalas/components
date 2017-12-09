@@ -35,6 +35,7 @@ html, body {
     position: absolute;
     top: 0;
     height: 100%;
+    width: 100%;
 }
 
 .overlay-grid-item .header,
@@ -61,10 +62,11 @@ html, body {
 
 .overlay-grid-item .intro {
     width: 100%;
+    max-width: 1280px;
     height: 400px;
     padding: 20px;
-    margin-bottom: 10px;
-    display: inline-block;
+    margin: 0 auto 10px;
+    display: block;
     background-color: gainsboro;
 }
 

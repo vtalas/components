@@ -1,3 +1,5 @@
+import anime from 'animejs';
+
 export const logoProto = {
 
     rectToD(r, stroke) {
