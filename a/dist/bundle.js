@@ -8159,6 +8159,13 @@ function createLinkResolver(globalSetting) {
 const Media = function() {
 
     var proto = {
+        init() {
+            window.addEventListener('resize', () => {
+                this.width = null;
+                this.height = null;
+            });
+            return this;
+        },
         getWidth: function() {
             if (!this.width) {
                 this.width = window.innerWidth;
@@ -8171,9 +8178,10 @@ const Media = function() {
             }
             return this.height;
         }
-    }
+    };
 
-    return Object.create(proto);
+
+    return Object.create(proto).init();
 };
 
 /* harmony default export */ __webpack_exports__["a"] = (Media);
@@ -9846,11 +9854,13 @@ const overlayGridItemProto = {
         this.dom.text.innerHTML = __WEBPACK_IMPORTED_MODULE_1_marked___default()(data.text);
 
         let itemsContent = this.dom.gridItemTemplate.querySelector('.items');
+        itemsContent.innerHTML = '';
 
         const photo = this.dom.photo;
         photo.classList.add('intro')
 
-        for (var i = 0, n = data.photos.length; i < n; i++) {
+        let i = 0, n = data.photos.length;
+        for (; i < n; i++) {
             let photosClone = photo.cloneNode(true);
             const img = document.createElement('img');
             img.setAttribute('src', data.photos[i].file.getUrl({ width: 50, height: 50 }));

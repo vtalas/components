@@ -181,11 +181,13 @@ export const overlayGridItemProto = {
         this.dom.text.innerHTML = m(data.text);
 
         let itemsContent = this.dom.gridItemTemplate.querySelector('.items');
+        itemsContent.innerHTML = '';
 
         const photo = this.dom.photo;
         photo.classList.add('intro')
 
-        for (var i = 0, n = data.photos.length; i < n; i++) {
+        let i = 0, n = data.photos.length;
+        for (; i < n; i++) {
             let photosClone = photo.cloneNode(true);
             const img = document.createElement('img');
             img.setAttribute('src', data.photos[i].file.getUrl({ width: 50, height: 50 }));
