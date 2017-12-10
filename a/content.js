@@ -244,11 +244,12 @@ export const getEntries = function() {
                     res[item.sys.id] = {
                         title: item.fields.nadpis,
                         text: item.fields.popis,
-                        fotky: item.fields.fotky.reduce((res, foto) => {
+                        photos: item.fields.fotky.reduce((res, foto) => {
 
                             if (foto.sys.type === 'Asset') {
+
                                 res.push({
-                                    file: foto.fields.file,
+                                    file: ContentfulImage(foto),
                                     title: foto.fields.title
                                 })
                             }
@@ -273,5 +274,105 @@ export const getEntries = function() {
 // });
 
 
-}
+};
 
+export const ContentfulImageFits = {
+    FIT: 'fit',
+    CROP: 'crop',
+    PAD: 'pad',
+    THUMB: 'thumb',
+    FILL: 'fill'
+};
+
+
+export const ContentfulImage = function(imageData) {
+
+    return {
+
+        getUrl(opt) {
+            opt = opt || {};
+
+            if (imageData.fields) {
+                let parts = [];
+
+                if (opt.fit) {
+                    parts.push(`fit=${opt.fit}`);
+                }
+                if (opt.width) {
+                    parts.push(`w=${opt.width}`);
+                }
+                if (opt.height) {
+                    parts.push(`h=${opt.height}`);
+                }
+
+                return `http:${imageData.fields.file.url}?${parts.join('&')}`;
+            }
+        }
+    };
+};
+
+// mock
+/*
+let data = {
+    aaa: {
+        title: 'title aaa',
+        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
+    },
+    bbb: {
+        title: 'Aadf dkjbfkjdbk',
+        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a kjaskfjbkjas bdkjfbkjdsab kjbdsafkbsadkfbk baskdbfkbdsak jbdsakfjb kasbdfkb ksajbdkfj sadkflakdsnflkjdsaljf klkdsajf lkjdsaf',
+    },
+    abbxb: {
+        title: 'title bbb',
+        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
+    },
+    bxbxb: {
+        title: 'title bbb',
+        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
+    },
+    bbxxxb: {
+        title: 'title bbb',
+        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
+    },
+    xbbxssdb: {
+        title: 'title bbb',
+        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
+    },
+    abbxxxb: {
+        title: 'title bbb',
+        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
+    },
+    wbbbddf: {
+        title: 'title bbb',
+        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
+    },
+    ebbxxxb: {
+        title: 'title bbb',
+        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
+    },
+    aSSS: {
+        title: 'title bbb',
+        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
+    },
+    SDSS: {
+        title: 'title bbb',
+        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
+    },
+    sdsd: {
+        title: 'title bbb',
+        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
+    },
+    rrbbxssdb: {
+        title: 'title bbb',
+        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
+    },
+    tbbxxxb: {
+        title: 'title bbb',
+        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
+    },
+    ybbbddf: {
+        title: 'title bbb',
+        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
+    }
+};
+*/

@@ -2594,71 +2594,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__overlay__ = __webpack_require__(175);
 
 
-/*
-let data = {
-    aaa: {
-        title: 'title aaa',
-        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
-    },
-    bbb: {
-        title: 'Aadf dkjbfkjdbk',
-        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a kjaskfjbkjas bdkjfbkjdsab kjbdsafkbsadkfbk baskdbfkbdsak jbdsakfjb kasbdfkb ksajbdkfj sadkflakdsnflkjdsaljf klkdsajf lkjdsaf',
-    },
-    abbxb: {
-        title: 'title bbb',
-        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
-    },
-    bxbxb: {
-        title: 'title bbb',
-        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
-    },
-    bbxxxb: {
-        title: 'title bbb',
-        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
-    },
-    xbbxssdb: {
-        title: 'title bbb',
-        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
-    },
-    abbxxxb: {
-        title: 'title bbb',
-        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
-    },
-    wbbbddf: {
-        title: 'title bbb',
-        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
-    },
-    ebbxxxb: {
-        title: 'title bbb',
-        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
-    },
-    aSSS: {
-        title: 'title bbb',
-        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
-    },
-    SDSS: {
-        title: 'title bbb',
-        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
-    },
-    sdsd: {
-        title: 'title bbb',
-        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
-    },
-    rrbbxssdb: {
-        title: 'title bbb',
-        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
-    },
-    tbbxxxb: {
-        title: 'title bbb',
-        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
-    },
-    ybbbddf: {
-        title: 'title bbb',
-        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
-    }
-};
-*/
-
 
 
 
@@ -2667,7 +2602,6 @@ let data = {
 const TEMPLATES = {
     GRID_ITEM: document.querySelector('._templates .grid-item'),
     OVERLAY: document.querySelector('._templates .template-overlay'),
-    OVERLAY_GRID_ITEM: document.querySelector('._templates .overlay-grid-item'),
     OVERLAY_SVG: document.querySelector('._templates .overlay-svg'),
     OVERLAY_CLOSE: document.querySelector('._templates .overlay-close')
 };
@@ -2691,7 +2625,7 @@ const Overlay = function() {
     );
     let a = Object.create(proto)
         .init(TEMPLATES.OVERLAY)
-        .initGridItem(TEMPLATES.OVERLAY_GRID_ITEM)
+        .initGridItem()
         .initSvg(TEMPLATES.OVERLAY_SVG)
         .initClose(TEMPLATES.OVERLAY_CLOSE)
     DOM.BODY.appendChild(a.dom.el);
@@ -2751,15 +2685,6 @@ const overlay = Overlay();
 const logo = function() {
     return Object.create(__WEBPACK_IMPORTED_MODULE_3__logo_logo__["a" /* logoProto */]).initLogo(SOURCE_EL.LOGO);
 }();
-
-
-
-
-
-
-
-
-
 
 
 
@@ -3018,11 +2943,12 @@ const getEntries = function() {
                     res[item.sys.id] = {
                         title: item.fields.nadpis,
                         text: item.fields.popis,
-                        fotky: item.fields.fotky.reduce((res, foto) => {
+                        photos: item.fields.fotky.reduce((res, foto) => {
 
                             if (foto.sys.type === 'Asset') {
+
                                 res.push({
-                                    file: foto.fields.file,
+                                    file: ContentfulImage(foto),
                                     title: foto.fields.title
                                 })
                             }
@@ -3047,10 +2973,114 @@ const getEntries = function() {
 // });
 
 
-}
+};
 /* harmony export (immutable) */ __webpack_exports__["a"] = getEntries;
 
 
+const ContentfulImageFits = {
+    FIT: 'fit',
+    CROP: 'crop',
+    PAD: 'pad',
+    THUMB: 'thumb',
+    FILL: 'fill'
+};
+/* unused harmony export ContentfulImageFits */
+
+
+
+const ContentfulImage = function(imageData) {
+
+    return {
+
+        getUrl(opt) {
+            opt = opt || {};
+
+            if (imageData.fields) {
+                let parts = [];
+
+                if (opt.fit) {
+                    parts.push(`fit=${opt.fit}`);
+                }
+                if (opt.width) {
+                    parts.push(`w=${opt.width}`);
+                }
+                if (opt.height) {
+                    parts.push(`h=${opt.height}`);
+                }
+
+                return `http:${imageData.fields.file.url}?${parts.join('&')}`;
+            }
+        }
+    };
+};
+/* unused harmony export ContentfulImage */
+
+
+// mock
+/*
+let data = {
+    aaa: {
+        title: 'title aaa',
+        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
+    },
+    bbb: {
+        title: 'Aadf dkjbfkjdbk',
+        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a kjaskfjbkjas bdkjfbkjdsab kjbdsafkbsadkfbk baskdbfkbdsak jbdsakfjb kasbdfkb ksajbdkfj sadkflakdsnflkjdsaljf klkdsajf lkjdsaf',
+    },
+    abbxb: {
+        title: 'title bbb',
+        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
+    },
+    bxbxb: {
+        title: 'title bbb',
+        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
+    },
+    bbxxxb: {
+        title: 'title bbb',
+        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
+    },
+    xbbxssdb: {
+        title: 'title bbb',
+        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
+    },
+    abbxxxb: {
+        title: 'title bbb',
+        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
+    },
+    wbbbddf: {
+        title: 'title bbb',
+        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
+    },
+    ebbxxxb: {
+        title: 'title bbb',
+        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
+    },
+    aSSS: {
+        title: 'title bbb',
+        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
+    },
+    SDSS: {
+        title: 'title bbb',
+        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
+    },
+    sdsd: {
+        title: 'title bbb',
+        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
+    },
+    rrbbxssdb: {
+        title: 'title bbb',
+        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
+    },
+    tbbxxxb: {
+        title: 'title bbb',
+        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
+    },
+    ybbbddf: {
+        title: 'title bbb',
+        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
+    }
+};
+*/
 
 
 /***/ }),
@@ -9792,9 +9822,10 @@ const svgProto = {
 
 const overlayGridItemProto = {
 
-    initGridItem(template) {
+    initGridItem() {
 
-        this.dom.gridItemTemplate = template.cloneNode(true);
+        this.dom.gridItemTemplate = document.querySelector('._templates .overlay-grid-item').cloneNode(true);
+        this.dom.photo = document.querySelector('.overlay-grid-item-photo');
 
         const el = this.dom.el;
         const t = this.dom.gridItemTemplate;
@@ -9815,15 +9846,16 @@ const overlayGridItemProto = {
         this.dom.text.innerHTML = __WEBPACK_IMPORTED_MODULE_1_marked___default()(data.text);
 
         let itemsContent = this.dom.gridItemTemplate.querySelector('.items');
-        let count = 10;
 
-        const intro = document.createElement('div');
-        intro.classList.add('intro')
+        const photo = this.dom.photo;
+        photo.classList.add('intro')
 
-        for (var i = 0, n = count; i < n; i++) {
-            let x = intro.cloneNode(true);
-            x.textContent = 'daaaaaa ' + i;
-            itemsContent.appendChild(x);
+        for (var i = 0, n = data.photos.length; i < n; i++) {
+            let photosClone = photo.cloneNode(true);
+            const img = document.createElement('img');
+            img.setAttribute('src', data.photos[i].file.getUrl({ width: 50, height: 50 }));
+            photosClone.appendChild(img);
+            itemsContent.appendChild(photosClone);
         }
 
         __WEBPACK_IMPORTED_MODULE_0_animejs___default()({

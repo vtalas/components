@@ -63,11 +63,15 @@ html, body {
 .overlay-grid-item .intro {
     width: 100%;
     max-width: 1280px;
-    height: 400px;
     padding: 20px;
     margin: 0 auto 10px;
     display: block;
+    box-sizing: border-box;
     background-color: gainsboro;
+}
+
+.overlay-grid-item-photo img {
+    max-width: 100%;
 }
 
 .overlay-close {

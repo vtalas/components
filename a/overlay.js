@@ -157,9 +157,10 @@ export const svgProto = {
 
 export const overlayGridItemProto = {
 
-    initGridItem(template) {
+    initGridItem() {
 
-        this.dom.gridItemTemplate = template.cloneNode(true);
+        this.dom.gridItemTemplate = document.querySelector('._templates .overlay-grid-item').cloneNode(true);
+        this.dom.photo = document.querySelector('.overlay-grid-item-photo');
 
         const el = this.dom.el;
         const t = this.dom.gridItemTemplate;
@@ -180,15 +181,16 @@ export const overlayGridItemProto = {
         this.dom.text.innerHTML = m(data.text);
 
         let itemsContent = this.dom.gridItemTemplate.querySelector('.items');
-        let count = 10;
 
-        const intro = document.createElement('div');
-        intro.classList.add('intro')
+        const photo = this.dom.photo;
+        photo.classList.add('intro')
 
-        for (var i = 0, n = count; i < n; i++) {
-            let x = intro.cloneNode(true);
-            x.textContent = 'daaaaaa ' + i;
-            itemsContent.appendChild(x);
+        for (var i = 0, n = data.photos.length; i < n; i++) {
+            let photosClone = photo.cloneNode(true);
+            const img = document.createElement('img');
+            img.setAttribute('src', data.photos[i].file.getUrl({ width: 50, height: 50 }));
+            photosClone.appendChild(img);
+            itemsContent.appendChild(photosClone);
         }
 
         anime({
