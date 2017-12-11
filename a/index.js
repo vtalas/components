@@ -12,8 +12,9 @@ const TEMPLATES = {
     OVERLAY_CLOSE: document.querySelector('._templates .overlay-close')
 };
 const SOURCE_EL = {
-    LOGO: document.querySelector('.logo')
-}
+    LOGO: document.querySelector('.logo'),
+    ITEMS: document.querySelector('.grid-item-container')
+};
 
 const DOM = {
     BODY: document.querySelector('body'),
@@ -74,11 +75,18 @@ const GridItem = function(data) {
     return gridItem;
 };
 
+// import {WebImage} from './image/index';
+
 client.getEntries().then(function(data) {
+
+    // const x = WebImage(Object.values(data)[0].photos[0].file);
+    // x.render();
+    // const div = document.querySelector('.web-image').appendChild(x.el);
+    // console.log(x.el);
 
     const items = Object.values(data).map(function(attributes) {
         let el = TEMPLATES.GRID_ITEM.cloneNode(true);
-        DOM.BODY.appendChild(el);
+        SOURCE_EL.ITEMS.appendChild(el);
         let gridItem = GridItem({ el, attributes });
         el.addEventListener('click', gridItem.onClick.bind(gridItem));
         return gridItem;

@@ -288,6 +288,9 @@ export const ContentfulImage = function(imageData) {
 
     return {
 
+        getInfo() {
+            return imageData.fields.file.details.image;
+        },
         getUrl(opt) {
             opt = opt || {};
 

@@ -3899,8 +3899,9 @@ const TEMPLATES = {
     OVERLAY_CLOSE: document.querySelector('._templates .overlay-close')
 };
 const SOURCE_EL = {
-    LOGO: document.querySelector('.logo')
-}
+    LOGO: document.querySelector('.logo'),
+    ITEMS: document.querySelector('.grid-item-container')
+};
 
 const DOM = {
     BODY: document.querySelector('body'),
@@ -3961,11 +3962,18 @@ const GridItem = function(data) {
     return gridItem;
 };
 
+// import {WebImage} from './image/index';
+
 __WEBPACK_IMPORTED_MODULE_0__content__["a" /* getEntries */]().then(function(data) {
+
+    // const x = WebImage(Object.values(data)[0].photos[0].file);
+    // x.render();
+    // const div = document.querySelector('.web-image').appendChild(x.el);
+    // console.log(x.el);
 
     const items = Object.values(data).map(function(attributes) {
         let el = TEMPLATES.GRID_ITEM.cloneNode(true);
-        DOM.BODY.appendChild(el);
+        SOURCE_EL.ITEMS.appendChild(el);
         let gridItem = GridItem({ el, attributes });
         el.addEventListener('click', gridItem.onClick.bind(gridItem));
         return gridItem;
@@ -4284,6 +4292,9 @@ const ContentfulImage = function(imageData) {
 
     return {
 
+        getInfo() {
+            return imageData.fields.file.details.image;
+        },
         getUrl(opt) {
             opt = opt || {};
 
@@ -9599,6 +9610,8 @@ const logoProto = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_animejs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_animejs__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_marked__ = __webpack_require__(52);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_marked___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_marked__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__image_index__ = __webpack_require__(176);
+
 
 
 
@@ -9795,11 +9808,10 @@ const overlayGridItemProto = {
 
         let i = 0, n = data.photos.length;
         for (; i < n; i++) {
-            let photosClone = photo.cloneNode(true);
-            const img = document.createElement('img');
-            img.setAttribute('src', data.photos[i].file.getUrl({ width: 50, height: 50 }));
-            photosClone.appendChild(img);
-            itemsContent.appendChild(photosClone);
+
+            let photoClone = photo.cloneNode(true);
+            photoClone.appendChild(Object(__WEBPACK_IMPORTED_MODULE_2__image_index__["a" /* WebImage */])(data.photos[i].file).render().el);
+            itemsContent.appendChild(photoClone);
         }
 
         __WEBPACK_IMPORTED_MODULE_0_animejs___default()({
@@ -9826,6 +9838,40 @@ const overlayGridItemProto = {
 /* harmony export (immutable) */ __webpack_exports__["b"] = overlayGridItemProto;
 
 
+
+
+/***/ }),
+/* 176 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+const WebImage = function(image) {
+
+    return Object.create({
+
+        init(image) {
+            this.image = image;
+            this.el = document.createElement('img');
+            return this;
+        },
+
+        render() {
+            const img = this.el;
+            const fullSize = new Image();
+
+            fullSize.addEventListener('load', () => {
+                img.setAttribute('src', fullSize.src);
+            });
+
+            fullSize.src = this.image.getUrl({ width: 1200 });
+
+            img.setAttribute('src', this.image.getUrl({ width: 10 }));
+
+            return this;
+        }
+    }).init(image);
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = WebImage;
 
 
 /***/ })

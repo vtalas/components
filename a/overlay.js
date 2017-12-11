@@ -1,5 +1,6 @@
 import anime from 'animejs';
 import m from 'marked';
+import {WebImage} from './image/index';
 
 export const proto = {
 
@@ -188,11 +189,10 @@ export const overlayGridItemProto = {
 
         let i = 0, n = data.photos.length;
         for (; i < n; i++) {
-            let photosClone = photo.cloneNode(true);
-            const img = document.createElement('img');
-            img.setAttribute('src', data.photos[i].file.getUrl({ width: 50, height: 50 }));
-            photosClone.appendChild(img);
-            itemsContent.appendChild(photosClone);
+
+            let photoClone = photo.cloneNode(true);
+            photoClone.appendChild(WebImage(data.photos[i].file).render().el);
+            itemsContent.appendChild(photoClone);
         }
 
         anime({

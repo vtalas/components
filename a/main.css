@@ -4,16 +4,16 @@ html, body {
 }
 
 .header-container-top {
-    height: 500px;
-    padding-top: 50px;
+    max-width: 100vmin;
+    padding: 4vmin;
+    margin: 0 auto;
 }
 
 .grid-item {
     background-color: gray;
-    width: 300px;
+    width: 50%;
     height: 300px;
     display: inline-grid;
-    margin: 10px;
 }
 
 .template-overlay {
@@ -71,7 +71,7 @@ html, body {
 }
 
 .overlay-grid-item-photo img {
-    max-width: 100%;
+    width: 100%;
 }
 
 .overlay-close {
@@ -80,4 +80,19 @@ html, body {
     right: 0;
     font-size: 400%;
     font-weight: bold;
+}
+
+.web-image {
+    width: 800px;
+    border: 1px solid red;
+}
+
+.web-image img {
+    width: 100%;
+    display: block;
+}
+
+.grid-item-container {
+    margin: 0 auto;
+    max-width: 100vmin;
 }
