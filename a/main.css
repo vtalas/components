@@ -71,6 +71,8 @@ html, body {
     top: 0;
     height: 100%;
     width: 100%;
+    padding: 4vmin;
+    box-sizing: border-box;
 }
 
 .overlay-grid-item .header,
@@ -128,6 +130,7 @@ html, body {
 }
 
 .grid-item-container {
+    padding: 4vmin;
     margin: 0 auto;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
