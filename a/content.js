@@ -273,7 +273,6 @@ export const getEntries = function() {
 //     console.log(error)
 // });
 
-
 };
 
 export const ContentfulImageFits = {
@@ -311,68 +310,3 @@ export const ContentfulImage = function(imageData) {
     };
 };
 
-// mock
-/*
-let data = {
-    aaa: {
-        title: 'title aaa',
-        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
-    },
-    bbb: {
-        title: 'Aadf dkjbfkjdbk',
-        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a kjaskfjbkjas bdkjfbkjdsab kjbdsafkbsadkfbk baskdbfkbdsak jbdsakfjb kasbdfkb ksajbdkfj sadkflakdsnflkjdsaljf klkdsajf lkjdsaf',
-    },
-    abbxb: {
-        title: 'title bbb',
-        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
-    },
-    bxbxb: {
-        title: 'title bbb',
-        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
-    },
-    bbxxxb: {
-        title: 'title bbb',
-        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
-    },
-    xbbxssdb: {
-        title: 'title bbb',
-        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
-    },
-    abbxxxb: {
-        title: 'title bbb',
-        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
-    },
-    wbbbddf: {
-        title: 'title bbb',
-        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
-    },
-    ebbxxxb: {
-        title: 'title bbb',
-        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
-    },
-    aSSS: {
-        title: 'title bbb',
-        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
-    },
-    SDSS: {
-        title: 'title bbb',
-        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
-    },
-    sdsd: {
-        title: 'title bbb',
-        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
-    },
-    rrbbxssdb: {
-        title: 'title bbb',
-        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
-    },
-    tbbxxxb: {
-        title: 'title bbb',
-        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
-    },
-    ybbbddf: {
-        title: 'title bbb',
-        text: 'tetete gttettetvtvatsdtstdsdvjsa hvdj a',
-    }
-};
-*/
