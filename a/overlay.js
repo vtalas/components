@@ -169,6 +169,7 @@ export const overlayGridItemProto = {
         el.appendChild(t);
 
         this.dom.header = t.querySelector('.header');
+        this.dom.headerScroll = t.querySelector('.header-scroll');
         this.dom.text = t.querySelector('.text');
         return this;
     },
@@ -179,6 +180,7 @@ export const overlayGridItemProto = {
 
         this.dom.gridItemTemplate.style.display = 'block';
         this.dom.header.textContent = data.title;
+        this.dom.headerScroll.textContent = data.title;
         this.dom.text.innerHTML = m(data.text);
 
         let itemsContent = this.dom.gridItemTemplate.querySelector('.items');

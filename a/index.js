@@ -52,11 +52,10 @@ const GridItem = function(data) {
             const h = media.getHeight();
             const o = 0;
 
-            DOM.HTML.style.overflow = 'hidden';
-
             overlay.open({
                 rect, w, h, o,
                 done: () => {
+                    DOM.HTML.style.overflow = 'hidden';
                     overlay.showData(this, rect);
                 },
                 close: () => {

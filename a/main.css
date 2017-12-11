@@ -1,39 +1,40 @@
 /*.container {*/
-    /*display: grid;*/
-    /*grid-template-columns: repeat(12, 1fr);*/
+/*display: grid;*/
+/*grid-template-columns: repeat(12, 1fr);*/
 /*}*/
 
 /*.container .header {*/
-    /*grid-column: span 12;*/
+/*grid-column: span 12;*/
 
-    /*height: 100px;*/
-    /*background-color: red;*/
+/*height: 100px;*/
+/*background-color: red;*/
 /*}*/
 
 /*.container .menu {*/
-    /*grid-column: span 12;*/
+/*grid-column: span 12;*/
 
-    /*height: 100px;*/
-    /*background-color: black;*/
+/*height: 100px;*/
+/*background-color: black;*/
 /*}*/
 
 /*.container .content {*/
-    /*grid-column: span 12;*/
+/*grid-column: span 12;*/
 
-    /*height: 100px;*/
-    /*background-color: green;*/
+/*height: 100px;*/
+/*background-color: green;*/
 /*}*/
 
 /*.container .footer {*/
-    /*grid-column: span 12;*/
+/*grid-column: span 12;*/
 
-    /*height: 100px;*/
-    /*background-color: orange;*/
+/*height: 100px;*/
+/*background-color: orange;*/
 /*}*/
 
 html, body {
     margin: 0;
     padding: 0;
+    font-family: sans-serif;
 }
 
 .header-container-top {
@@ -66,12 +67,12 @@ html, body {
 }
 
 .overlay-grid-item {
+    overflow-y: scroll;
     display: none;
     position: absolute;
     top: 0;
     height: 100%;
     width: 100%;
-    padding: 4vmin;
     box-sizing: border-box;
 }
 
@@ -86,22 +87,29 @@ html, body {
 
 .overlay-grid-item .header {
     font-size: 350%;
+    padding-top: 4vmin;
+    display: inline-block;
+    padding-bottom: 4vmin;
 }
 
 .overlay-grid-item .header-container {
-    height: 150px;
+    height: 100px;
+    display: flex;
+    align-items: center;
 }
 
 .overlay-grid-item .content-container {
-    height: calc(100% - 150px);
-    overflow-y: scroll;
+    max-width: 1280px;
+    margin: 0 auto;
+    height: 100%;
+    padding-left: 4vmin;
+    padding-right: 4vmin;
 }
 
 .overlay-grid-item .intro {
     width: 100%;
-    max-width: 1280px;
     padding: 20px;
-    margin: 0 auto 10px;
+    margin-bottom: 10px;
     display: block;
     box-sizing: border-box;
     background-color: gainsboro;
@@ -113,10 +121,11 @@ html, body {
 
 .overlay-close {
     position: absolute;
-    top: 0;
-    right: 0;
+    top: 4vmin;
+    left: 4vmin;
     font-size: 400%;
     font-weight: bold;
+    padding: 8px;
 }
 
 .web-image {
@@ -139,9 +148,15 @@ html, body {
     max-width: 100vmin;
 }
 
-@media screen and (max-width: 680px ) {
+@media screen and (max-device-width: 768px ) {
     .grid-item-container {
         grid-row-gap: 35px;
         grid-template-columns: 1fr;
+    }
+}
+
+@media screen and (max-device-width: 1500px ) {
+    .overlay-grid-item .header {
+        text-indent: 80px;
     }
 }
