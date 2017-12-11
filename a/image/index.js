@@ -19,6 +19,7 @@ export const WebImage = function(image) {
             fullSize.src = this.image.getUrl({ width: 1200 });
 
             img.setAttribute('src', this.image.getUrl({ width: 10 }));
+            img.classList.add('web-image-img');
 
             return this;
         }

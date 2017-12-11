@@ -241,7 +241,7 @@ export const getEntries = function() {
             let list = response.items
                 .filter(item => item.sys.contentType.sys.id === 'reference')
                 .reduce((res, item) => {
-                    res[item.sys.id] = {
+                    let values = {
                         title: item.fields.nadpis,
                         text: item.fields.popis,
                         photos: item.fields.fotky.reduce((res, foto) => {
@@ -256,10 +256,15 @@ export const getEntries = function() {
                             return res;
                         }, [])
                     };
+                    res[item.sys.id] = values;
+                    res[item.sys.id + '121'] = values;
+                    res[item.sys.id + '121sdsd'] = values;
+                    res[item.sys.id + '12ssds'] = values;
+
                     return res;
                 }, {});
 
-            return list;
+            return list
             // list = _.orderBy(list, [
             //     (item) => modelsSettigs[item.type].rank,
             //     (item) => new Date(item.get('fields').datum || 0)

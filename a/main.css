@@ -1,3 +1,36 @@
+/*.container {*/
+    /*display: grid;*/
+    /*grid-template-columns: repeat(12, 1fr);*/
+/*}*/
+
+/*.container .header {*/
+    /*grid-column: span 12;*/
+
+    /*height: 100px;*/
+    /*background-color: red;*/
+/*}*/
+
+/*.container .menu {*/
+    /*grid-column: span 12;*/
+
+    /*height: 100px;*/
+    /*background-color: black;*/
+/*}*/
+
+/*.container .content {*/
+    /*grid-column: span 12;*/
+
+    /*height: 100px;*/
+    /*background-color: green;*/
+/*}*/
+
+/*.container .footer {*/
+    /*grid-column: span 12;*/
+
+    /*height: 100px;*/
+    /*background-color: orange;*/
+/*}*/
+
 html, body {
     margin: 0;
     padding: 0;
@@ -11,9 +44,11 @@ html, body {
 
 .grid-item {
     background-color: gray;
-    width: 50%;
-    height: 300px;
-    display: inline-grid;
+    overflow: hidden;
+}
+
+.grid-item .web-image-img {
+    width: 100%;
 }
 
 .template-overlay {
@@ -94,5 +129,16 @@ html, body {
 
 .grid-item-container {
     margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-column-gap: 10px;
+    grid-row-gap: 10px;
     max-width: 100vmin;
+}
+
+@media screen and (max-width: 680px ) {
+    .grid-item-container {
+        grid-row-gap: 35px;
+        grid-template-columns: 1fr;
+    }
 }
