@@ -95,7 +95,16 @@ html, body {
 .overlay-grid-item .header-container {
     height: 100px;
     display: flex;
+    position: fixed;
+    top: -100px;
     align-items: center;
+    background-color: white;
+    width: 100%;
+}
+
+.overlay-grid-item .header-container .header-scroll {
+    padding-left: 16px;
+    font-size: 350%;
 }
 
 .overlay-grid-item .content-container {
@@ -104,6 +113,7 @@ html, body {
     height: 100%;
     padding-left: 4vmin;
     padding-right: 4vmin;
+    padding-top: 100px;
 }
 
 .overlay-grid-item .intro {
@@ -120,12 +130,10 @@ html, body {
 }
 
 .overlay-close {
-    position: absolute;
-    top: 4vmin;
-    left: 4vmin;
     font-size: 400%;
     font-weight: bold;
-    padding: 8px;
+    padding-left: 4vmin;
+    order: -1;
 }
 
 .web-image {
@@ -155,8 +163,3 @@ html, body {
     }
 }
 
-@media screen and (max-device-width: 1500px ) {
-    .overlay-grid-item .header {
-        text-indent: 80px;
-    }
-}

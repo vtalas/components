@@ -1,6 +1,7 @@
 import anime from 'animejs';
 import m from 'marked';
 import {WebImage} from './image/index';
+import debounce from 'lodash.debounce';
 
 export const proto = {
 
@@ -13,12 +14,9 @@ export const proto = {
 
 export const closeProto = {
 
-    initClose(template) {
+    initClose() {
 
-        this.dom.closeButon = template.cloneNode(true);
-        this.dom.el.appendChild(this.dom.closeButon);
-
-        this.dom.closeButon.addEventListener('click', this.close.bind(this));
+        this.on('close-overlay', this.close.bind(this))
         return this;
     },
 
@@ -73,8 +71,7 @@ export const closeProto = {
 
         opt.close();
     },
-
-}
+};
 
 export const svgProto = {
 
@@ -156,6 +153,85 @@ export const svgProto = {
     }
 };
 
+export const overlayScroll = {
+
+
+    initScroll(scrollableElement) {
+
+        const t = this.dom.gridItemTemplate;
+
+        this.dom.floatHeader = t.querySelector('.header-container');
+        this.dom.headerScroll = t.querySelector('.header-scroll');
+        this.currentScroll = 0;
+
+        const closeButton = document.querySelector('._templates .overlay-close').cloneNode(true);
+        this.dom.floatHeader.appendChild(closeButton);
+
+        closeButton.addEventListener('click', () => this.trigger('close-overlay'));
+        scrollableElement.addEventListener('scroll', el => this.onScroll(el.target.scrollTop));
+        this.on('overlay-data-changed', this.onDataChanged.bind(this));
+    },
+
+    onDataChanged(data) {
+        this.dom.headerScroll.textContent = data.title;
+    },
+
+    onScroll(scrollOffset) {
+
+        const triggerThreshold = 40;
+
+        if (scrollOffset < 400) {
+            this.showFloatHeader();
+            return;
+        }
+
+        if (scrollOffset - this.currentScroll < -triggerThreshold) {
+            this.showFloatHeader();
+        }
+
+        if (scrollOffset - this.currentScroll > triggerThreshold) {
+            this.hideFloatHeader();
+        }
+
+        this.currentScroll = scrollOffset;
+    },
+
+    hideFloatHeader(force) {
+
+        if (!this.hiddingInProgress || force) {
+
+            this.showingInProgress = false;
+            this.hiddingInProgress = true;
+
+            anime({
+                targets: this.dom.floatHeader,
+                translateY: 0,
+                duration: 1000,
+                easing: 'easeOutExpo',
+                onComplete: () => this.hiddingInProgress = false
+            });
+        }
+    },
+
+    showFloatHeader: function(force) {
+
+
+        const translate = 100;
+        if (!this.showingInProgress || force) {
+            this.showingInProgress = true;
+            this.hiddingInProgress = false;
+            anime({
+                targets: this.dom.floatHeader,
+                translateY: translate,
+                duration: 500,
+                easing: 'easeInExpo',
+                onComplete: () => this.showingInProgress = false
+            });
+        }
+    },
+
+};
+
 export const overlayGridItemProto = {
 
     initGridItem() {
@@ -169,7 +245,6 @@ export const overlayGridItemProto = {
         el.appendChild(t);
 
         this.dom.header = t.querySelector('.header');
-        this.dom.headerScroll = t.querySelector('.header-scroll');
         this.dom.text = t.querySelector('.text');
         return this;
     },
@@ -177,10 +252,11 @@ export const overlayGridItemProto = {
     showData(gridItem) {
 
         let data = gridItem.data;
+        this.trigger('overlay-data-changed', data);
 
         this.dom.gridItemTemplate.style.display = 'block';
-        this.dom.header.textContent = data.title;
-        this.dom.headerScroll.textContent = data.title;
+        // this.dom.header.textContent = data.title;
+
         this.dom.text.innerHTML = m(data.text);
 
         let itemsContent = this.dom.gridItemTemplate.querySelector('.items');

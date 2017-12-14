@@ -4,12 +4,12 @@ import Media from './media';
 import {gridItemProto} from './grid-item';
 import {logoProto} from './logo/logo';
 import * as over from './overlay';
+import BackboneEvents from 'backbone-events-standalone';
 
 const TEMPLATES = {
     GRID_ITEM: document.querySelector('._templates .grid-item'),
     OVERLAY: document.querySelector('._templates .template-overlay'),
-    OVERLAY_SVG: document.querySelector('._templates .overlay-svg'),
-    OVERLAY_CLOSE: document.querySelector('._templates .overlay-close')
+    OVERLAY_SVG: document.querySelector('._templates .overlay-svg')
 };
 const SOURCE_EL = {
     LOGO: document.querySelector('.logo'),
@@ -28,17 +28,24 @@ const Overlay = function() {
         over.proto,
         over.svgProto,
         over.closeProto,
-        over.overlayGridItemProto
+        over.overlayGridItemProto,
+        over.overlayScroll,
+        BackboneEvents,
     );
-    let a = Object.create(proto)
+
+    let overlay = Object.create(proto)
         .init(TEMPLATES.OVERLAY)
         .initGridItem()
         .initSvg(TEMPLATES.OVERLAY_SVG)
-        .initClose(TEMPLATES.OVERLAY_CLOSE)
-    DOM.BODY.appendChild(a.dom.el);
+        .initClose()
 
-    return a;
+    overlay.initScroll(overlay.dom.gridItemTemplate);
+    DOM.BODY.appendChild(overlay.dom.el);
+
+    return overlay;
 };
+
+const overlay = Overlay();
 
 const GridItem = function(data) {
 
@@ -90,9 +97,9 @@ client.getEntries().then(function(data) {
         el.addEventListener('click', gridItem.onClick.bind(gridItem));
         return gridItem;
     });
-});
 
-const overlay = Overlay();
+    // items[0].onClick()
+});
 
 
 const logo = function() {
