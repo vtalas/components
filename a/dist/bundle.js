@@ -9835,73 +9835,62 @@ const overlayScroll = {
 
         this.dom.floatHeader = t.querySelector('.header-container');
         this.dom.headerScroll = t.querySelector('.header-scroll');
-        this.currentScroll = 0;
 
         const closeButton = document.querySelector('._templates .overlay-close').cloneNode(true);
         this.dom.floatHeader.appendChild(closeButton);
 
         closeButton.addEventListener('click', () => this.trigger('close-overlay'));
+
+        this.currentScroll = 0;
+        this.showHeader = null;
+
         scrollableElement.addEventListener('scroll', el => this.onScroll(el.target.scrollTop));
         this.on('overlay-data-changed', this.onDataChanged.bind(this));
     },
 
     onDataChanged(data) {
         this.dom.headerScroll.textContent = data.title;
+
+        this.timeline = __WEBPACK_IMPORTED_MODULE_0_animejs___default.a.timeline().add({
+            targets: this.dom.floatHeader,
+            translateY: -100,
+            duration: 300,
+            easing: 'easeOutExpo',
+        });
+
+        this.showHeader = false;
+        this.timeline.pause();
     },
 
     onScroll(scrollOffset) {
 
-        const triggerThreshold = 40;
+        const triggerThreshold = 5;
 
         if (scrollOffset < 400) {
-            this.showFloatHeader();
+            this.toggleHeader(true);
             return;
         }
 
         if (scrollOffset - this.currentScroll < -triggerThreshold) {
-            this.showFloatHeader();
+            this.toggleHeader(true);
         }
 
         if (scrollOffset - this.currentScroll > triggerThreshold) {
-            this.hideFloatHeader();
+            this.toggleHeader(false);
         }
 
         this.currentScroll = scrollOffset;
     },
 
-    hideFloatHeader(force) {
+    toggleHeader(value) {
 
-        if (!this.hiddingInProgress || force) {
-
-            this.showingInProgress = false;
-            this.hiddingInProgress = true;
-
-            __WEBPACK_IMPORTED_MODULE_0_animejs___default()({
-                targets: this.dom.floatHeader,
-                translateY: 0,
-                duration: 1000,
-                easing: 'easeOutExpo',
-                onComplete: () => this.hiddingInProgress = false
-            });
+        if (value !== this.showHeader) {
+            this.timeline.pause();
+            this.timeline.reverse();
+            this.timeline.play();
+            this.showHeader = value;
         }
-    },
-
-    showFloatHeader: function(force) {
-
-
-        const translate = 100;
-        if (!this.showingInProgress || force) {
-            this.showingInProgress = true;
-            this.hiddingInProgress = false;
-            __WEBPACK_IMPORTED_MODULE_0_animejs___default()({
-                targets: this.dom.floatHeader,
-                translateY: translate,
-                duration: 500,
-                easing: 'easeInExpo',
-                onComplete: () => this.showingInProgress = false
-            });
-        }
-    },
+    }
 
 };
 /* harmony export (immutable) */ __webpack_exports__["c"] = overlayScroll;
@@ -9930,7 +9919,6 @@ const overlayGridItemProto = {
         this.trigger('overlay-data-changed', data);
 
         this.dom.gridItemTemplate.style.display = 'block';
-        // this.dom.header.textContent = data.title;
 
         this.dom.text.innerHTML = __WEBPACK_IMPORTED_MODULE_1_marked___default()(data.text);
 
@@ -9938,7 +9926,7 @@ const overlayGridItemProto = {
         itemsContent.innerHTML = '';
 
         const photo = this.dom.photo;
-        photo.classList.add('intro')
+        photo.classList.add('intro');
 
         let i = 0, n = data.photos.length;
         for (; i < n; i++) {
@@ -9949,7 +9937,7 @@ const overlayGridItemProto = {
         }
 
         __WEBPACK_IMPORTED_MODULE_0_animejs___default()({
-            targets: [this.dom.text, this.dom.header],
+            targets: [this.dom.text],
             duration: 600,
             easing: 'easeOutExpo',
             delay: (target, index) => {

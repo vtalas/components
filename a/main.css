@@ -96,15 +96,21 @@ html, body {
     height: 100px;
     display: flex;
     position: fixed;
-    top: -100px;
+    top: 0;
     align-items: center;
+    opacity: 0.4;
     background-color: white;
     width: 100%;
 }
 
 .overlay-grid-item .header-container .header-scroll {
-    padding-left: 16px;
     font-size: 350%;
+    max-width: 1300px;
+    display: block;
+    width: 100%;
+    margin: 0 auto;
+    padding-left: 4vmin;
+    padding-right: 4vmin;
 }
 
 .overlay-grid-item .content-container {
@@ -123,6 +129,7 @@ html, body {
     display: block;
     box-sizing: border-box;
     background-color: gainsboro;
+    border-radius: 4px;
 }
 
 .overlay-grid-item-photo img {
@@ -133,7 +140,7 @@ html, body {
     font-size: 400%;
     font-weight: bold;
     padding-left: 4vmin;
-    order: -1;
+    position: absolute;
 }
 
 .web-image {
@@ -160,6 +167,12 @@ html, body {
     .grid-item-container {
         grid-row-gap: 35px;
         grid-template-columns: 1fr;
+    }
+}
+
+@media screen and (max-device-width: 1600px ) {
+    .overlay-grid-item .header-container .header-scroll {
+        padding-left: 100px;
     }
 }
 
