@@ -9492,7 +9492,7 @@ const gridItemProto = {
         this.DOM.el = data.el;
 
         this.DOM.title = data.el.querySelector('.title');
-        this.DOM.title.innerHTML = __WEBPACK_IMPORTED_MODULE_0_marked___default()(data.attributes.title);
+        this.DOM.title.textContent = data.attributes.title;
 
         this.DOM.el.appendChild(Object(__WEBPACK_IMPORTED_MODULE_1__image_index__["a" /* WebImage */])(data.attributes.photos[0].file).render().el);
 

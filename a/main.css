@@ -34,7 +34,7 @@
 html, body {
     margin: 0;
     padding: 0;
-    font-family: sans-serif;
+    font-family: 'Comfortaa', cursive;
 }
 
 .header-container-top {
@@ -44,12 +44,27 @@ html, body {
 }
 
 .grid-item {
-    background-color: gray;
+    background-color: #eeeeee;
     overflow: hidden;
+    border-radius: 4px;
+    padding: 16px;
+}
+
+.grid-item .title {
+    font-size: 210%;
+    text-transform: uppercase;
+    margin: 8px 0px 24px;
+    display: inline-block;
+}
+
+.grid-item .title p {
+    margin: 1px;
 }
 
 .grid-item .web-image-img {
     width: 100%;
+    border: 1px solid black;
+    border-radius: 2px;
 }
 
 .template-overlay {
@@ -79,6 +94,7 @@ html, body {
 .overlay-grid-item .header,
 .overlay-grid-item .text {
     opacity: 0;
+    font-family: sans-serif;
 }
 
 .overlay-grid-item .text {
@@ -111,6 +127,7 @@ html, body {
     margin: 0 auto;
     padding-left: 4vmin;
     padding-right: 4vmin;
+    text-transform: uppercase;
 }
 
 .overlay-grid-item .content-container {
