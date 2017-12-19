@@ -4300,9 +4300,9 @@ const getEntries = function() {
                         }, [])
                     };
                     res[item.sys.id] = values;
-                    res[item.sys.id + '121'] = values;
-                    res[item.sys.id + '121sdsd'] = values;
-                    res[item.sys.id + '12ssds'] = values;
+                    // res[item.sys.id + '121'] = values;
+                    // res[item.sys.id + '121sdsd'] = values;
+                    // res[item.sys.id + '12ssds'] = values;
 
                     return res;
                 }, {});
