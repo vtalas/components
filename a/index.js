@@ -12,7 +12,6 @@ const TEMPLATES = {
     OVERLAY_SVG: document.querySelector('._templates .overlay-svg')
 };
 const SOURCE_EL = {
-    LOGO: document.querySelector('.logo'),
     ITEMS: document.querySelector('.grid-item-container')
 };
 
@@ -103,7 +102,7 @@ client.getEntries().then(function(data) {
 
 
 const logo = function() {
-    return Object.create(logoProto).initLogo(SOURCE_EL.LOGO);
+    return Object.create(logoProto).initLogo();
 }();
 
 

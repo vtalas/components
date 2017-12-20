@@ -2,58 +2,11 @@ import anime from 'animejs';
 
 export const logoProto = {
 
-    rectToD(r, stroke) {
-        return ['M',
-            r.x, r.y + r.height + stroke / 2,
-            r.x, r.y,
-            r.x + r.width, r.y,
-            r.x + r.width, r.y + r.height,
-            r.x, r.y + r.height,
-        ];
-    },
-
-    smallFrame() {
-
-        const frame = this.dom.frame;
-        const center = this.center;
-        const s = 3;
-        const r = { x: center.x - s, y: center.y, width: 2 * s, height: 2 * s };
-        const strokeWidth = 2.6;
-
-        frame.setAttribute('d', this.rectToD(r, strokeWidth).join(' '));
-        frame.setAttribute('opacity', 1);
-        frame.setAttribute('stroke-dasharray', 300 + '');
-        frame.setAttribute('stroke-dashoffset', (300 - strokeWidth) + '');
-
-        var timeLine = anime.timeline();
-        timeLine.add({
-            targets: frame,
-            delay: 100,
-            duration: 2500,
-            easing: 'easeInOutQuint',
-            'stroke-dashoffset': 0,
-            complete: () => frame.removeAttribute('stroke-dasharray')
-        });
-
-        timeLine.add({
-            targets: frame,
-            easing: 'easeInQuint',
-            offset: '-=2000',
-            d: this.rectToD(this.rect, strokeWidth).join(' '),
-            complete: () => {
-                frame.setAttribute('opacity', 0);
-                this.largeFrame();
-            }
-        });
-    },
-
     largeFrame() {
 
         const r = this.rect;
         const strokeWidth = 2.5 + '';
         const a = strokeWidth / 2;
-
-        this.dom.g.setAttribute('opacity', 1 + '');
 
         const top = this.dom.top;
         top.setAttribute('d', ['M', r.x - a, r.y, r.x + r.width + a, r.y].join(' '));
@@ -63,20 +16,19 @@ export const logoProto = {
         bottom.setAttribute('d', ['M', r.x - a, r.y + r.height, r.x + r.width + a, r.y + r.height].join(' '));
         bottom.setAttribute('stroke-width', strokeWidth);
 
-        const left = this.dom.left;
-        left.setAttribute('d', ['M', r.x, r.y + r.height, r.x, r.y].join(' '));
-        left.setAttribute('stroke-width', strokeWidth);
-
-        const right = this.dom.right;
-        right.setAttribute('d', ['M', r.x + r.width, r.y + r.height, r.x + r.width, r.y].join(' '));
-        right.setAttribute('stroke-width', strokeWidth);
-
         const line = anime.timeline();
-
         const aa = 62.5;
         const bb = 30.7;
         const easing = 'easeOutExpo';
-        const offset = 100;
+        const offset = 500;
+
+        line.add({
+            targets: this.dom.g,
+            offset: offset,
+            opacity: 1,
+            duration: 1000,
+            easing: easing
+        });
 
         line.add({
             targets: top,
@@ -94,29 +46,20 @@ export const logoProto = {
             easing: easing,
         });
 
-        line.add({
-            targets: right,
-            offset: offset,
-            d: ['M', r.x + r.width, r.y, r.x + r.width, r.y].join(' '),
-            duration: 1500,
-            easing: easing,
-        });
+        this.textFadeIn(line);
+    },
 
-        line.add({
-            targets: left,
-            offset: offset,
-            d: ['M', r.x, r.y + r.height, r.x, r.y + r.height].join(' '),
-            duration: 1500,
-            easing: easing,
-        });
+    textFadeIn(line) {
 
         const text = this.dom.path;
         line.add({
-            targets: text, duration: 2000, offset: '-=1250', 'stroke-width': 0, easing: 'easeOutQuint',
+            targets: text, duration: 3000, offset: '-=1250', 'stroke-width': 0, easing: 'easeOutQuint',
         });
     },
 
-    initLogo(sourceElement) {
+    initLogo() {
+
+        const sourceElement = document.querySelector('.logo');
 
         this.dom = {};
         this.dom.el = sourceElement;
@@ -131,7 +74,7 @@ export const logoProto = {
         this.dom.g = sourceElement.querySelector('#layer2');
         this.center = { x: 46, y: 10 };
 
-        this.smallFrame();
+        this.largeFrame();
 
         return this;
     }

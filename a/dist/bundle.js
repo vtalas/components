@@ -3936,7 +3936,6 @@ const TEMPLATES = {
     OVERLAY_SVG: document.querySelector('._templates .overlay-svg')
 };
 const SOURCE_EL = {
-    LOGO: document.querySelector('.logo'),
     ITEMS: document.querySelector('.grid-item-container')
 };
 
@@ -4027,7 +4026,7 @@ __WEBPACK_IMPORTED_MODULE_0__content__["a" /* getEntries */]().then(function(dat
 
 
 const logo = function() {
-    return Object.create(__WEBPACK_IMPORTED_MODULE_3__logo_logo__["a" /* logoProto */]).initLogo(SOURCE_EL.LOGO);
+    return Object.create(__WEBPACK_IMPORTED_MODULE_3__logo_logo__["a" /* logoProto */]).initLogo();
 }();
 
 
@@ -9480,6 +9479,9 @@ const Media = function() {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_marked__ = __webpack_require__(52);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_marked___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_marked__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__image_index__ = __webpack_require__(53);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_animejs__ = __webpack_require__(54);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_animejs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_animejs__);
+
 
 
 
@@ -9494,7 +9496,21 @@ const gridItemProto = {
         this.DOM.title = data.el.querySelector('.title');
         this.DOM.title.textContent = data.attributes.title;
 
-        this.DOM.el.appendChild(Object(__WEBPACK_IMPORTED_MODULE_1__image_index__["a" /* WebImage */])(data.attributes.photos[0].file).render().el);
+        const imageEl = Object(__WEBPACK_IMPORTED_MODULE_1__image_index__["a" /* WebImage */])(data.attributes.photos[0].file).render().el;
+        this.DOM.el.appendChild(imageEl);
+
+        __WEBPACK_IMPORTED_MODULE_2_animejs___default()({
+            targets: [this.DOM.title, imageEl],
+            duration: 600,
+            easing: 'easeOutExpo',
+            delay: (target, index) => {
+                return index * 60;
+            },
+            translateY: (target, index, total) => {
+                return [50, 0];
+            },
+            opacity: [0, 1]
+        });
 
         this.data = data.attributes;
     }
@@ -9515,58 +9531,11 @@ const gridItemProto = {
 
 const logoProto = {
 
-    rectToD(r, stroke) {
-        return ['M',
-            r.x, r.y + r.height + stroke / 2,
-            r.x, r.y,
-            r.x + r.width, r.y,
-            r.x + r.width, r.y + r.height,
-            r.x, r.y + r.height,
-        ];
-    },
-
-    smallFrame() {
-
-        const frame = this.dom.frame;
-        const center = this.center;
-        const s = 3;
-        const r = { x: center.x - s, y: center.y, width: 2 * s, height: 2 * s };
-        const strokeWidth = 2.6;
-
-        frame.setAttribute('d', this.rectToD(r, strokeWidth).join(' '));
-        frame.setAttribute('opacity', 1);
-        frame.setAttribute('stroke-dasharray', 300 + '');
-        frame.setAttribute('stroke-dashoffset', (300 - strokeWidth) + '');
-
-        var timeLine = __WEBPACK_IMPORTED_MODULE_0_animejs___default.a.timeline();
-        timeLine.add({
-            targets: frame,
-            delay: 100,
-            duration: 2500,
-            easing: 'easeInOutQuint',
-            'stroke-dashoffset': 0,
-            complete: () => frame.removeAttribute('stroke-dasharray')
-        });
-
-        timeLine.add({
-            targets: frame,
-            easing: 'easeInQuint',
-            offset: '-=2000',
-            d: this.rectToD(this.rect, strokeWidth).join(' '),
-            complete: () => {
-                frame.setAttribute('opacity', 0);
-                this.largeFrame();
-            }
-        });
-    },
-
     largeFrame() {
 
         const r = this.rect;
         const strokeWidth = 2.5 + '';
         const a = strokeWidth / 2;
-
-        this.dom.g.setAttribute('opacity', 1 + '');
 
         const top = this.dom.top;
         top.setAttribute('d', ['M', r.x - a, r.y, r.x + r.width + a, r.y].join(' '));
@@ -9576,20 +9545,19 @@ const logoProto = {
         bottom.setAttribute('d', ['M', r.x - a, r.y + r.height, r.x + r.width + a, r.y + r.height].join(' '));
         bottom.setAttribute('stroke-width', strokeWidth);
 
-        const left = this.dom.left;
-        left.setAttribute('d', ['M', r.x, r.y + r.height, r.x, r.y].join(' '));
-        left.setAttribute('stroke-width', strokeWidth);
-
-        const right = this.dom.right;
-        right.setAttribute('d', ['M', r.x + r.width, r.y + r.height, r.x + r.width, r.y].join(' '));
-        right.setAttribute('stroke-width', strokeWidth);
-
         const line = __WEBPACK_IMPORTED_MODULE_0_animejs___default.a.timeline();
-
         const aa = 62.5;
         const bb = 30.7;
         const easing = 'easeOutExpo';
-        const offset = 100;
+        const offset = 500;
+
+        line.add({
+            targets: this.dom.g,
+            offset: offset,
+            opacity: 1,
+            duration: 1000,
+            easing: easing
+        });
 
         line.add({
             targets: top,
@@ -9607,29 +9575,20 @@ const logoProto = {
             easing: easing,
         });
 
-        line.add({
-            targets: right,
-            offset: offset,
-            d: ['M', r.x + r.width, r.y, r.x + r.width, r.y].join(' '),
-            duration: 1500,
-            easing: easing,
-        });
+        this.textFadeIn(line);
+    },
 
-        line.add({
-            targets: left,
-            offset: offset,
-            d: ['M', r.x, r.y + r.height, r.x, r.y + r.height].join(' '),
-            duration: 1500,
-            easing: easing,
-        });
+    textFadeIn(line) {
 
         const text = this.dom.path;
         line.add({
-            targets: text, duration: 2000, offset: '-=1250', 'stroke-width': 0, easing: 'easeOutQuint',
+            targets: text, duration: 3000, offset: '-=1250', 'stroke-width': 0, easing: 'easeOutQuint',
         });
     },
 
-    initLogo(sourceElement) {
+    initLogo() {
+
+        const sourceElement = document.querySelector('.logo');
 
         this.dom = {};
         this.dom.el = sourceElement;
@@ -9644,7 +9603,7 @@ const logoProto = {
         this.dom.g = sourceElement.querySelector('#layer2');
         this.center = { x: 46, y: 10 };
 
-        this.smallFrame();
+        this.largeFrame();
 
         return this;
     }
@@ -9787,7 +9746,7 @@ const svgProto = {
         var t = __WEBPACK_IMPORTED_MODULE_0_animejs___default.a.timeline()
         t.add({
             targets: this.dom.path,
-            duration: 600,
+            duration: 200,
             easing: 'easeOutQuad',
             elasticity: 250,
             d: [{
@@ -9802,7 +9761,7 @@ const svgProto = {
             complete: () => this.isAnimating = false
         }).add({
             targets: this.dom.path,
-            duration: 800,
+            duration: 200,
             easing: 'easeOutQuad',
             elasticity: 250,
             offset: 100,
@@ -9928,27 +9887,24 @@ const overlayGridItemProto = {
         const photo = this.dom.photo;
         photo.classList.add('intro');
 
+        const targetsToAnimate = [this.dom.text];
         let i = 0, n = data.photos.length;
         for (; i < n; i++) {
 
             let photoClone = photo.cloneNode(true);
             photoClone.appendChild(Object(__WEBPACK_IMPORTED_MODULE_2__image_index__["a" /* WebImage */])(data.photos[i].file).render().el);
             itemsContent.appendChild(photoClone);
+            targetsToAnimate.push(photoClone)
         }
 
         __WEBPACK_IMPORTED_MODULE_0_animejs___default()({
-            targets: [this.dom.text],
+            targets: targetsToAnimate,
             duration: 600,
             easing: 'easeOutExpo',
             delay: (target, index) => {
                 return index * 60;
             },
-            translateY: (target, index, total) => {
-                return index !== total - 1 ? [50, 0] : 0;
-            },
-            scale: (target, index, total) => {
-                return index === total - 1 ? [0, 1] : 1;
-            },
+            translateY: [50, 0],
             opacity: 1
         });
     },

@@ -34,6 +34,7 @@
 html, body {
     margin: 0;
     padding: 0;
+    color: #424242;
     font-family: 'Roboto', sans-serif;
 }
 
@@ -53,6 +54,7 @@ html, body {
     text-transform: uppercase;
     margin: 8px 0px 24px;
     display: inline-block;
+    font-weight: 600;
 }
 
 .grid-item .title p {
@@ -91,7 +93,7 @@ html, body {
 .overlay-grid-item .header,
 .overlay-grid-item .text {
     opacity: 0;
-    font-family: sans-serif;
+    font-family: monospace;
 }
 
 .overlay-grid-item .text {
@@ -111,8 +113,10 @@ html, body {
     position: fixed;
     top: 0;
     align-items: center;
+    opacity: 0.9;
     background-color: white;
     width: 100%;
+    border-bottom: 1px solid #757575;
 }
 
 .overlay-grid-item .header-container .header-scroll {
@@ -141,12 +145,13 @@ html, body {
     margin-bottom: 10px;
     display: block;
     box-sizing: border-box;
-    background-color: gainsboro;
-    border-radius: 4px;
+    background-color: #eeeeee;
+    border-radius: 8px;
 }
 
 .overlay-grid-item-photo img {
     width: 100%;
+    border-radius: 8px;
 }
 
 .overlay-close {
@@ -165,6 +170,10 @@ html, body {
     display: block;
 }
 
+.logo {
+    width: 20%;
+}
+
 .grid-item-container {
     padding: 0 4vmin 4vmin;
     margin: 0 auto;
@@ -179,6 +188,10 @@ html, body {
     .grid-item-container {
         grid-row-gap: 35px;
         grid-template-columns: 1fr;
+    }
+
+    .logo {
+        width: 100%;
     }
 }
 

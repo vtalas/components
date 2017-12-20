@@ -116,7 +116,7 @@ export const svgProto = {
         var t = anime.timeline()
         t.add({
             targets: this.dom.path,
-            duration: 600,
+            duration: 200,
             easing: 'easeOutQuad',
             elasticity: 250,
             d: [{
@@ -131,7 +131,7 @@ export const svgProto = {
             complete: () => this.isAnimating = false
         }).add({
             targets: this.dom.path,
-            duration: 800,
+            duration: 200,
             easing: 'easeOutQuad',
             elasticity: 250,
             offset: 100,
@@ -253,27 +253,24 @@ export const overlayGridItemProto = {
         const photo = this.dom.photo;
         photo.classList.add('intro');
 
+        const targetsToAnimate = [this.dom.text];
         let i = 0, n = data.photos.length;
         for (; i < n; i++) {
 
             let photoClone = photo.cloneNode(true);
             photoClone.appendChild(WebImage(data.photos[i].file).render().el);
             itemsContent.appendChild(photoClone);
+            targetsToAnimate.push(photoClone)
         }
 
         anime({
-            targets: [this.dom.text],
+            targets: targetsToAnimate,
             duration: 600,
             easing: 'easeOutExpo',
             delay: (target, index) => {
                 return index * 60;
             },
-            translateY: (target, index, total) => {
-                return index !== total - 1 ? [50, 0] : 0;
-            },
-            scale: (target, index, total) => {
-                return index === total - 1 ? [0, 1] : 1;
-            },
+            translateY: [50, 0],
             opacity: 1
         });
     },
