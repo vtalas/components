@@ -1,8 +1,8 @@
 const calc = Object.create({
 
     init(rate, monthlyPayment) {
-        this.rate = rate;
-        this.monthlyPayment = monthlyPayment;
+        this.rate = parseFloat(rate);
+        this.monthlyPayment = parseFloat(monthlyPayment);
         return this;
     },
 
@@ -24,9 +24,14 @@ const calc = Object.create({
 
         const res = {
             sum: {
-                begin: sum,
+                begin: Number.parseInt(sum, 10),
                 end: null,
                 interestYearly: null
+            },
+            meta: {
+                interest: this.rate,
+                months: months,
+                payment: this.monthlyPayment,
             },
             payments: []
         };
