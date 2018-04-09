@@ -1,6 +1,7 @@
 const calc = Object.create({
 
     init(rate, monthlyPayment) {
+
         this.rate = parseFloat(rate);
         this.monthlyPayment = parseFloat(monthlyPayment);
         return this;
@@ -21,6 +22,10 @@ const calc = Object.create({
     },
 
     aaa: function(sum, months) {
+
+        if (!sum || !months || !this.rate || !this.monthlyPayment) {
+            return null;
+        }
 
         const res = {
             sum: {

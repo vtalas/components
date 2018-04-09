@@ -1,14 +1,9 @@
 const calc = require('./calc');
 
-const sum = document.querySelector('#sum');
-const interest = document.querySelector('#interest');
-const months = document.querySelector('#months');
-const payment = document.querySelector('#payment');
-
-sum.value = 2295722.39;
-interest.value = 2.79;
-months.value = 12;
-payment.value = 10021;
+const sumEl = document.querySelector('#sum');
+const interestEl = document.querySelector('#interest');
+const monthsEl = document.querySelector('#months');
+const paymentEl = document.querySelector('#payment');
 
 const Render = Object.create({
     init(result) {
@@ -45,6 +40,10 @@ const Render = Object.create({
     render() {
 
         const r = this.result;
+        if (!r) {
+            this.add('h4', 'zadej vsechny hodnoty');
+            return;
+        }
         this.add('h4', '---------------------------------------------------------');
         this.add('h3', `${(r.meta.interest).toLocaleString()}% / ${r.meta.months} měsíců / splatka: ${(r.meta.payment).toLocaleString()} Kc`);
         // this.add('h3', 'urok', (r.meta.interest).toLocaleString() + '%');
@@ -78,25 +77,64 @@ const Render = Object.create({
             ]);
             tableContent.setAttribute('class', 'list')
         }
-
-        console.log(r);
     }
 });
 
+const q = function(url) {
+    var query = url.split('?')[1];
+    var params = {};
+    if (typeof query === 'string') {
+        var args = query.split('&');
+
+        params = args.reduce(function(res, item) {
+            var x = item.split('=');
+            res[x[0]] = x[1];
+            return res;
+        }, {});
+    }
+
+    return params;
+};
+
 const get = function() {
 
+    const opt = {
+        interest: interestEl.value,
+        sum: sumEl.value,
+        months: monthsEl.value,
+        payment: paymentEl.value,
+    };
 
-    const x = calc.init(interest.value, payment.value);
-    const result = x.aaa(sum.value, months.value);
+    const x = calc.init(opt.interest, opt.payment);
+    const result = x.aaa(opt.sum, opt.months);
 
     const render = Render.init(result);
-
     render.render();
 };
+
+const initialize = function() {
+
+    const params = q(window.location.href);
+
+    let sum = parseFloat(params.sum);
+    let interest = parseFloat(params.interest);
+    let months = parseFloat(params.months);
+    let payment = parseFloat(params.payment);
+
+    sumEl.value = Number.isFinite(sum) ? sum : 0.0;
+    interestEl.value = Number.isFinite(interest) ? interest : 0.0;
+    monthsEl.value = Number.isFinite(months) ? months : 0.0;
+    paymentEl.value = Number.isFinite(payment) ? payment : 0;
+
+    // sum.value = 2295722.39;
+    // interest.value = 2.79;
+    // months.value = 12;
+    // payment.value = 10021;
+};
+
 document.querySelector('#submit').addEventListener('click', function() {
     get();
 });
 
+initialize();
 get();
-
-console.log(calc);
