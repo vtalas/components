@@ -1,4 +1,5 @@
 const calc = require('./calc');
+const utils = require('./utils');
 
 const sumEl = document.querySelector('#sum');
 const interestEl = document.querySelector('#interest');
@@ -6,6 +7,7 @@ const monthsEl = document.querySelector('#months');
 const paymentEl = document.querySelector('#payment');
 
 const Render = Object.create({
+
     init(result) {
         this.el = document.querySelector('#result');
         this.el.textContent = '';
@@ -80,23 +82,8 @@ const Render = Object.create({
     }
 });
 
-const q = function(url) {
-    var query = url.split('?')[1];
-    var params = {};
-    if (typeof query === 'string') {
-        var args = query.split('&');
 
-        params = args.reduce(function(res, item) {
-            var x = item.split('=');
-            res[x[0]] = x[1];
-            return res;
-        }, {});
-    }
-
-    return params;
-};
-
-const get = function() {
+const getQuote = function() {
 
     const opt = {
         interest: interestEl.value,
@@ -114,7 +101,7 @@ const get = function() {
 
 const initialize = function() {
 
-    const params = q(window.location.href);
+    const params = utils.q(window.location.href);
 
     let sum = parseFloat(params.sum);
     let interest = parseFloat(params.interest);
@@ -133,8 +120,8 @@ const initialize = function() {
 };
 
 document.querySelector('#submit').addEventListener('click', function() {
-    get();
+    getQuote();
 });
 
 initialize();
-get();
+getQuote();

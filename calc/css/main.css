@@ -1,0 +1,35 @@
+html {
+    /*Body font-size = (62.5/100)*16 = 10px*/
+    font-size: 62.5%;
+}
+
+section {
+    margin: 0 auto;
+    max-width: 80rem;
+}
+
+body {
+    font-size: 2rem;
+    font-family: monospace;
+}
+
+h3 {
+    /*display: inline-block;*/
+    margin: 0;
+}
+
+.list span {
+    display: inline-block;
+    width: 100px;
+}
+
+.list span.s_1 {
+    /*width: 40px;*/
+}
+
+input[type='number'] {
+    height: 2.4rem;
+    padding: 0.8rem;
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+}

@@ -2,11 +2,14 @@
 	"scripts": {
 		"dev": "webpack --mode development --watch",
 		"build": "webpack --mode production",
-		"test": "tape-watch ./*.tape.js -p faucet"
+		"test": "tape-watch ./**/*.tape.js -p faucet"
 	},
 	"devDependencies": {
 		"faucet": "0.0.1",
 		"tape": "^4.9.0",
 		"tape-watch": "^2.3.0"
+	},
+	"dependencies": {
+		"cleave": "^1.0.0-alpha.10"
 	}
 }
